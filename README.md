@@ -1,1 +1,1 @@
-# -School-Timetable-Management-System
+#School-Timetable-Management-System

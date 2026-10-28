@@ -1,131 +1,100 @@
 # School Timetable Management System
 
-A full-stack web application designed to simplify school timetable creation, management, and distribution. The system provides role-based access for administrators, teachers, students, and parents, with automated timetable generation and conflict validation.
+A full-stack web application for creating, validating, publishing, and viewing school timetables. It provides role-based access for administrators, teachers, students, and parents.
 
-## Project Overview
+## Features
 
-The School Timetable Management System helps schools manage academic schedules efficiently. Administrators can manage academic information, generate timetables, validate scheduling conflicts, and publish approved timetables. Teachers, students, and parents can view the published schedules based on their roles.
-
-## Key Features
-
-- **Role-Based Authentication:** Secure login for Admin, Teacher, Student, and Parent.
-- **Admin Dashboard:** Manage classes, teachers, students, parents, subjects, rooms, and periods.
-- **Timetable Generation:** Automatically generate timetables using a rule-based greedy scheduling approach.
-- **Conflict Detection:** Validate teacher, classroom, and room availability to prevent scheduling conflicts.
-- **Timetable Publishing:** Save generated timetables as drafts and publish them after validation.
-- **Timetable Viewing:** Allow teachers, students, and parents to view published timetables.
-- **CSV Export:** Export timetable information in CSV format.
-- **Secure Authentication:** JWT-based authentication and BCrypt password hashing.
+- Role-based authentication for Admin, Teacher, Student, and Parent
+- Admin management of classes, teachers, students, parents, subjects, rooms, and periods
+- Rule-based greedy timetable generation
+- Conflict validation for class, teacher, and room scheduling
+- Draft and publish workflow for validated timetables
+- Role-specific timetable views
+- Timetable CSV export
+- JWT authentication and BCrypt password hashing
+- REST API documentation through Springdoc / Swagger UI
 
 ## Technology Stack
 
 | Layer | Technologies |
 |---|---|
-| Frontend | React.js 18, HTML, CSS, JavaScript |
+| Frontend | React 18, JavaScript, HTML, CSS |
+| Routing / API | React Router, Axios |
 | Backend | Java 17, Spring Boot 3.3.4 |
-| API Communication | REST APIs, Axios |
-| Database | MySQL |
-| ORM | Spring Data JPA, Hibernate |
+| Persistence | Spring Data JPA, Hibernate, MySQL |
 | Security | Spring Security, JWT, BCrypt |
-| Build Tool | Maven |
-| Version Control | Git, GitHub |
+| Build tools | npm, Maven |
 
-## System Architecture
-
-```text
-React.js Frontend
-       |
-       | Axios / REST API
-       |
-Spring Boot Backend
-       |
-       |----------------------|
-       |          |           |
-  Controllers  Services  Spring Security
-       |
-  Spring Data JPA
-       |
-    MySQL Database
-```
-
-## Timetable Generation Workflow
-
-1. Administrator enters and manages school information.
-2. The system retrieves classes, subjects, teachers, rooms, and periods.
-3. A rule-based greedy algorithm assigns available resources to timetable slots.
-4. The system checks for teacher, class, and room scheduling conflicts.
-5. The generated timetable is saved as a draft.
-6. After successful validation, the administrator can publish the timetable.
-7. Teachers, students, and parents can view the published timetable.
-
-## Project Structure
+## Repository Structure
 
 ```text
-school-timetable-system/
-│
+School-Timetable-Management-System/
 ├── backend/
-│   ├── src/
-│   ├── models/
-│   ├── routes/
-│   ├── services/
+│   ├── src/main/java/com/school/timetable/
+│   │   ├── config/
+│   │   ├── controller/
+│   │   ├── dto/
+│   │   ├── entity/
+│   │   ├── exception/
+│   │     ├── repository/
+│   │   ├── security/
+│   │   └── service/
+│   ├── src/main/resources/
 │   └── pom.xml
-│
 ├── frontend/
 │   ├── public/
 │   ├── src/
-│   └── package.json
-│
-├── .env.example
+│   │   ├── api/
+│   │   ├── components/
+│   │   ├── context/
+│   │   ├── pages/
+│   │   └── routes/
+│   ├── package.json
+│   └── package-lock.json
 ├── .gitignore
+├── classroom.txt
+├── LICENSE
 └── README.md
 ```
 
-*Note: Update the folder names above if your actual repository structure differs.*
-
-## Installation and Setup
+## Setup and Run
 
 ### Prerequisites
 
-- Java 17 or later
+- JDK 17
+- Maven
 - Node.js and npm
 - MySQL
-- Maven
-- Git
 
-### 1. Clone the Repository
+### 1. Clone the repository
 
 ```bash
 git clone https://github.com/Priyadharsini987/School-Timetable-Management-System.git
 cd School-Timetable-Management-System
 ```
 
-### 2. Configure the Database
+### 2. Configure MySQL and backend settings
 
-Create a MySQL database:
+Create the database (or allow the configured MySQL URL to create it):
 
 ```sql
-CREATE DATABASE school_timetable;
+CREATE DATABASE school_timetable_db;
 ```
 
-Configure the database URL, username, and password in the backend environment or application configuration.
+Configure database credentials and the JWT signing secret using environment variables before running the backend. Do not commit real passwords or signing secrets.
 
-### 3. Run the Backend
-
-Navigate to the backend directory:
+### 3. Start the backend
 
 ```bash
 cd backend
-```
-
-Run the Spring Boot application:
-
-```bash
 mvn spring-boot:run
 ```
 
-### 4. Run the Frontend
+The backend runs on `http://localhost:8080` by default.
 
-Open another terminal and navigate to the frontend directory:
+### 4. Start the frontend
+
+Open a second terminal:
 
 ```bash
 cd frontend
@@ -133,29 +102,32 @@ npm install
 npm start
 ```
 
-The frontend and backend should now be running locally. Adjust the commands if your actual project uses a different React setup or directory structure.
+The React development server runs on `http://localhost:3000`. The frontend package configuration proxies API requests to the backend at port 8080.
 
-## Security
+## API Documentation
 
-- JWT-based authentication.
-- Password hashing using BCrypt.
-- Role-based access control.
-- Protected backend endpoints.
+When the backend is running, Swagger UI is configured at:
 
-## Future Enhancements
+`http://localhost:8080/swagger-ui.html`
 
-- Advanced timetable optimization.
-- Automated timetable rescheduling.
-- Notifications for timetable changes.
-- Attendance management integration.
-- Improved timetable analytics and reporting.
+## Timetable Generation Flow
+
+1. The administrator maintains classes, subjects, teachers, rooms, and periods.
+2. The backend gathers the available scheduling data.
+3. The generator assigns resources to timetable slots using a rule-based greedy approach.
+4. The system checks for scheduling conflicts.
+5. The timetable is saved as a draft.
+6. A conflict-free timetable can be published.
+7. Teachers, students, and parents can view the published timetable according to their roles.
+
+## Notes
+
+- Install frontend dependencies with `npm install`; dependency folders are not part of the source code.
+- Configure secrets locally through environment variables. Never publish database passwords, admin passwords, or JWT signing keys.
+- Automated backend test coverage has not been confirmed; build and test the application in your own environment before deployment.
 
 ## Author
 
 **Priyadharsini V**  
 B.E. Computer Science and Engineering  
 Sri Krishna College of Engineering and Technology (SKCET), Coimbatore
-
----
-
-*Developed as an academic full-stack web application using React.js, Java Spring Boot, and MySQL.*
